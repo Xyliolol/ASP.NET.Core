@@ -1,58 +1,48 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
+﻿
 using Microsoft.AspNetCore.Mvc;
+using WebApp.Repositories;
 
 namespace WebApp.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("employeer/[controller]")]
     [ApiController]
     public class EmployeesController : ControllerBase
     {
-        private readonly ILogger<EmployeesController> _logger;
-        private readonly IMapper _mapper;
-        private readonly IPersonReposinory _employeerRepository;
+        public readonly EmployeerRepository employeerRepository;
 
-        public EmployeesController(ILogger<EmployeesController> logger, IPersonReposinory reposinory, IMapper mapper)
+        public EmployeesController(EmployeerRepository employeerRepository)
         {
-            _logger = logger;
-            _employeerRepository = reposinory;
-            _mapper = mapper;
+            this.employeerRepository = employeerRepository;
         }
 
-        [HttpGet("employees/{EmployeesId}")]
-        public IActionResult GetEmployeerById([FromRoute] int Id)
+        [HttpGet]
+        public IActionResult GetAll()
         {
-            return Ok();
+            var result = employeerRepository.Get();
+            return Ok(result);
         }
 
+        [HttpPost]
+        public IActionResult Create([FromBody] EmployeerModel newEmployeer)
 
-        [HttpGet("employees/{EmployeesName}")]
-        public IActionResult GetEmployeerByName([FromRoute] string Firstname)
         {
-            return Ok();
+            employeerRepository.Add(newEmployeer);
+            return Ok(newEmployeer);
         }
 
-
-        [HttpPost("register")]
-        public IActionResult AddEmployeer([FromBody] EmployeesModel entity)
+        [HttpPut]
+        public IActionResult Update([FromBody] EmployeerModel newEmployeer)
 
         {
-            return Ok();
+            employeerRepository.Update(newEmployeer);
+            return Ok(newEmployeer);
         }
 
-
-        [HttpPut("update")]
-        public IActionResult UpdateEmployeer([FromBody] EmployeesModel entity)
-
+        [HttpDelete]
+        public IActionResult Delete([FromBody] int Id)
         {
-            return Ok();
-        }
-
-
-        [HttpDelete("delete")]
-        public IActionResult DeleteEmployeer([FromBody] EmployeesModel entity)
-        {
-            return Ok();
+            employeerRepository.Delete(Id);
+            return NoContent();
         }
     }
 }

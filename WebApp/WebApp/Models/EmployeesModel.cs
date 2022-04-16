@@ -1,13 +1,9 @@
-﻿namespace WebApp
-{
-    public class EmployeesModel
-    {
-        public int Id { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Email { get; set; }
-        public string Company { get; set; }
-        public int Age { get; set; }
+﻿using WebApp.Models;
 
+namespace WebApp
+{
+    public class EmployeerModel : PersonModel
+    {
+       public string Division { get; set; }
     }
 }
