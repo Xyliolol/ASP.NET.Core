@@ -31,7 +31,7 @@ namespace WebApp.Repositories
         public IEnumerable<UserModel> Get()
         {
             var employee =  _context.Users.ToList();
-            return (IEnumerable<UserModel>)employee;           
+            return employee;           
         }
         public void Update(UserModel entity)
         {

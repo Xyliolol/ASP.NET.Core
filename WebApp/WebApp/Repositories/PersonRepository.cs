@@ -30,7 +30,7 @@ namespace WebApp.Repositories
         public IEnumerable<PersonModel> Get()
         {
             var employee = _context.Persons.ToList();
-            return (IEnumerable<PersonModel>)employee;
+            return employee;
         }
         public void Update(PersonModel entity)
         {
