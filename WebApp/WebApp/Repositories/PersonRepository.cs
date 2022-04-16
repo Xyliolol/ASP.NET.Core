@@ -29,7 +29,7 @@ namespace WebApp.Repositories
         }
         public IEnumerable<PersonModel> Get()
         {
-            var employee = _context.Employeers.ToList();
+            var employee = _context.Persons.ToList();
             return (IEnumerable<PersonModel>)employee;
         }
         public void Update(PersonModel entity)
