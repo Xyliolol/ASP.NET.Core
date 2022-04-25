@@ -1,16 +1,18 @@
 ﻿
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Models;
 using WebApp.Repositories;
 
 namespace WebApp.Controllers
 {
+    [Authorize]
     [Route("person/[controller]")]
     [ApiController]
     public class PersonController : ControllerBase
     {
         public readonly PersonRepository personRepository;
-
+       
         public PersonController(PersonRepository personRepository)
         {
             this.personRepository = personRepository;

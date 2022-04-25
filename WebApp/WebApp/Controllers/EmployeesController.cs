@@ -1,14 +1,17 @@
 ﻿
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Repositories;
 
 namespace WebApp.Controllers
 {
+    [Authorize]
     [Route("employeer/[controller]")]
     [ApiController]
     public class EmployeesController : ControllerBase
     {
         public readonly EmployeerRepository employeerRepository;
+       
 
         public EmployeesController(EmployeerRepository employeerRepository)
         {
