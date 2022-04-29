@@ -1,8 +1,10 @@
 ﻿
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Models;
 using WebApp.Repositories;
+using WebApp.Validation;
 
 namespace WebApp.Controllers
 {
@@ -17,8 +19,9 @@ namespace WebApp.Controllers
         {
             this.userRepository = userRepository;
         }
-
-        [HttpGet]
+       
+           
+    [HttpGet]
         public IActionResult GetAll()
         {
             var result = userRepository.Get();

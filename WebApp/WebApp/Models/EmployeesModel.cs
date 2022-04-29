@@ -4,6 +4,8 @@ namespace WebApp
 {
     public class EmployeerModel : PersonModel
     {
-       public string Division { get; set; }
+
+        public string Division { get; set; }
+
     }
 }

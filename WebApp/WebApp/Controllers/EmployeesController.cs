@@ -11,11 +11,10 @@ namespace WebApp.Controllers
     public class EmployeesController : ControllerBase
     {
         public readonly EmployeerRepository employeerRepository;
-       
-
+               
         public EmployeesController(EmployeerRepository employeerRepository)
         {
-            this.employeerRepository = employeerRepository;
+         this. employeerRepository = employeerRepository;
         }
 
         [HttpGet]
@@ -47,5 +46,6 @@ namespace WebApp.Controllers
             employeerRepository.Delete(Id);
             return NoContent();
         }
+       
     }
 }
