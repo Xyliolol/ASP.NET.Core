@@ -1,0 +1,55 @@
+﻿
+using FluentValidation.Results;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using WebApp.Models;
+using WebApp.Repositories;
+using WebApp.Validation;
+
+namespace WebApp.Controllers
+{
+    [Authorize]
+    [Route("user/[controller]")]
+    [ApiController]
+    public class UserController : ControllerBase
+    {
+        public readonly UserRepository userRepository;
+       
+        public UserController(UserRepository userRepository)
+        {
+            this.userRepository = userRepository;
+        }
+       
+           
+    [HttpGet]
+        public IActionResult GetAll()
+        {
+            var result = userRepository.Get();
+            return Ok(result);
+        }
+
+        [HttpPost]
+        public IActionResult Create([FromBody] UserModel newUser)
+
+        {
+            userRepository.Add(newUser);
+            return Ok(newUser);
+        }
+
+        [HttpPut]
+        public IActionResult Update([FromBody] UserModel newUser)
+
+        {
+            userRepository.Update(newUser);
+            return Ok(newUser);
+        }
+
+        [HttpDelete]
+        public IActionResult Delete([FromBody] int Id)
+        {
+            userRepository.Delete(Id);
+            return NoContent();
+        }
+    }
+}
+
