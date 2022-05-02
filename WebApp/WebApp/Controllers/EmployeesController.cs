@@ -1,7 +1,10 @@
 ﻿
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebApp.Models;
 using WebApp.Repositories;
+using WebApp.Services;
+using WebApp.Validation;
 
 namespace WebApp.Controllers
 {
@@ -11,10 +14,16 @@ namespace WebApp.Controllers
     public class EmployeesController : ControllerBase
     {
         public readonly EmployeerRepository employeerRepository;
-               
-        public EmployeesController(EmployeerRepository employeerRepository)
+        private IEmployeerValidator employeerValidator;
+        private IEmpDelValidator employeerDelValidator;
+        public EmployeesController(EmployeerRepository employeerRepository,
+            IEmployeerValidator employeerValidator,
+            IEmpDelValidator employeerDelValidator)
+
         {
          this. employeerRepository = employeerRepository;
+            this.employeerValidator = employeerValidator;
+            this.employeerDelValidator = employeerDelValidator;
         }
 
         [HttpGet]
@@ -27,9 +36,14 @@ namespace WebApp.Controllers
         [HttpPost]
         public IActionResult Create([FromBody] EmployeerModel newEmployeer)
 
-        {
-            employeerRepository.Add(newEmployeer);
-            return Ok(newEmployeer);
+        {          
+            var validation = new OperationResult<EmployeerModel>(employeerValidator.ValidateEntity(newEmployeer));
+            if (!validation.Succeed)
+            {
+                return BadRequest(validation);
+            }
+             employeerRepository.Add(newEmployeer);
+            return NoContent();
         }
 
         [HttpPut]
@@ -41,8 +55,14 @@ namespace WebApp.Controllers
         }
 
         [HttpDelete]
-        public IActionResult Delete([FromBody] int Id)
+        public IActionResult Delete( int Id)
         {
+            var request = new EmployeerDeleteModel { Id = Id };
+            var validation = new OperationResult<EmployeerDeleteModel>(employeerDelValidator.ValidateEntity(request));
+            if (!validation.Succeed)
+            {
+                return BadRequest(validation);
+            }
             employeerRepository.Delete(Id);
             return NoContent();
         }
