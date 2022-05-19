@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using WebApp.Interface;
+﻿using Microsoft.AspNetCore.Mvc;
 using WebApp.Models;
 using WebApp.Repositories;
 
@@ -17,9 +15,10 @@ namespace WebApp.Controllers
             this.repository = repository;
         }
         [HttpPost]
-        public IActionResult Create([FromBody] ScoreModel score)
+        public async Task<ActionResult<ScoreModel>> Create()
         {
-            repository.Add(score);
+
+            await repository.Add();
             return NoContent();
         }
         [HttpGet]
@@ -29,15 +28,15 @@ namespace WebApp.Controllers
             return Ok(get);
         }
         [HttpPut]
-        public ActionResult<ScoreModel> Action([FromBody] ScoreModel score)
+        public async Task<ActionResult<ScoreModel>> Action([FromBody] ScoreModel score)
         {
-            repository.Action(score);
+            await repository.Action(score);
             return NoContent();
         }
         [HttpDelete]
-        public ActionResult<ScoreModel> Close ([FromBody]ScoreModel score)
+        public async Task<ActionResult<ScoreModel>> Close ([FromBody]ScoreModel score)
         {
-            repository.Close(score);
+            await repository.Close(score);
             return NoContent() ;
         }
     }

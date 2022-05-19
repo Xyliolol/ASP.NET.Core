@@ -8,9 +8,9 @@ namespace WebApp.Interface
     }
     public interface IScore<T> where T : class
     {
-        void Add(T entity);
-        void Close(T entity);       
+        Task Add();
+        Task Close(T entity);       
         IEnumerable<T> Get();
-        void Action(T entity);
+        Task Action(T entity);
     }
 }

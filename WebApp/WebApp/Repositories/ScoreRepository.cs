@@ -9,34 +9,35 @@ namespace WebApp.Repositories
         private readonly MyDBContext _context;
         public ScoreRepository(MyDBContext context)
         {
-            this._context = context;
+            _context = context;
         }
-        public void Action(ScoreModel entity)
+        public async Task Action(ScoreModel entity) 
         {
-            var score =  _context.Scorees.OrderBy(x => x.ScoreId == entity.ScoreId).LastOrDefault();
+            var score = await _context.Scorees.OrderBy(x => x.ScoreId == entity.ScoreId).LastOrDefaultAsync();
             if (score == null)
             {
                 throw new ArgumentException("нет данных", entity.ScoreId.ToString());
             }
             score.Close(entity);
-             _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void Add(ScoreModel entity)
+        public async Task Add()
         {
-            _context.Add(entity.Create());
-            _context.SaveChanges();
+            var score = new ScoreModel();
+            _context.Add(score.Create());
+            _context.SaveChangesAsync();
         }
 
-        public void Close(ScoreModel entity)
+        public async Task Close(ScoreModel entity)
         {
-            var score = _context.Scorees.OrderBy(x => x.ScoreId == entity.ScoreId).LastOrDefault();
+            var score = await _context.Scorees.OrderBy(x => x.ScoreId == entity.ScoreId).LastOrDefaultAsync();
             if (score == null)
             {
                 throw new ArgumentException("нет данных", entity.ScoreId.ToString());
             }
             score.Close(entity);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public IEnumerable<ScoreModel> Get()
