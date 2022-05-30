@@ -13,9 +13,18 @@ namespace WebApp.Controllers
     [ApiController]
     public class PersonController : ControllerBase
     {
+        private readonly IPersonRepository _personRepository;
         public readonly PersonRepository personRepository;
-        private IPersonValidator personValidator;
+        private IPersonValidator personValidator;       
         private IPersDelValidator personDelValidator;
+        public PersonController(IPersonRepository persRepo,
+            IPersonValidator personValidator,
+            IPersDelValidator deleteValidator)
+        {
+            this._personRepository = persRepo;
+            this.personValidator = personValidator;
+            this.personDelValidator = deleteValidator;
+        }
         public PersonController(PersonRepository personRepository,
             IPersonValidator personValidator,
              IPersDelValidator personDelValidator)
