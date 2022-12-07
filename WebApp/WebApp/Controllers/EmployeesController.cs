@@ -13,9 +13,19 @@ namespace WebApp.Controllers
     [ApiController]
     public class EmployeesController : ControllerBase
     {
+        public readonly IEmployeerRepository _employeerRepository;
         public readonly EmployeerRepository employeerRepository;
         private IEmployeerValidator employeerValidator;
         private IEmpDelValidator employeerDelValidator;
+
+        public EmployeesController(IEmployeerRepository empRepo,
+           IEmployeerValidator employeerValidator,
+            IEmpDelValidator employeerDelValidator)
+        {
+            this._employeerRepository = empRepo;
+            this.employeerValidator = employeerValidator;
+            this.employeerDelValidator = employeerDelValidator;
+        }
         public EmployeesController(EmployeerRepository employeerRepository,
             IEmployeerValidator employeerValidator,
             IEmpDelValidator employeerDelValidator)

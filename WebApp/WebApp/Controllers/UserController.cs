@@ -14,9 +14,18 @@ namespace WebApp.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
+        public readonly IUserRepository _userRepository;
         public readonly UserRepository userRepository;
         private IUserValidator userValidator;
         private IUserDelValidator userDelValidator;
+        public UserController(IUserRepository userRepo,
+          IUserValidator userValidator,
+          IUserDelValidator userDelValidator)
+        {
+            this._userRepository = userRepo;
+            this.userValidator = userValidator;
+            this.userDelValidator = userDelValidator;
+        }
         public UserController(UserRepository userRepository,
             IUserValidator userValidator,
             IUserDelValidator userDelValidator)
