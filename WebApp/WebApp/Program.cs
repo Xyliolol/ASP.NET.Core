@@ -1,11 +1,7 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
-using System.Text;
 using WebApp;
-using WebApp.Models;
 using WebApp.Repositories;
+using WebApp.Validation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,11 +22,15 @@ var Config = new ConfigurationBuilder()
 var connectionString = Config.GetConnectionString("database");
 builder.Services.AddDbContext<MyDBContext>(options => options.UseSqlite(connectionString));
 
-
 builder.Services.AddScoped<PersonRepository>();
 builder.Services.AddScoped<UserRepository>();
 builder.Services.AddScoped<EmployeerRepository>();
-
+builder.Services.AddScoped<IPersonValidator, PersonValidationService>();
+builder.Services.AddScoped<IPersDelValidator, PersDelValidator>();
+builder.Services.AddScoped<IUserValidator, UserValidationService>();
+builder.Services.AddScoped<IUserDelValidator, UserDelValidator>();
+builder.Services.AddScoped<IEmployeerValidator, EmployeeValidationService>();
+builder.Services.AddScoped<IEmpDelValidator, EmpDelValidator>();
 var app = builder.Build();
 
 startup.Configure(app, app.Environment);

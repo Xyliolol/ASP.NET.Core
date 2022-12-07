@@ -1,8 +1,11 @@
 ﻿
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Models;
 using WebApp.Repositories;
+using WebApp.Services;
+using WebApp.Validation;
 
 namespace WebApp.Controllers
 {
@@ -12,13 +15,19 @@ namespace WebApp.Controllers
     public class UserController : ControllerBase
     {
         public readonly UserRepository userRepository;
-       
-        public UserController(UserRepository userRepository)
+        private IUserValidator userValidator;
+        private IUserDelValidator userDelValidator;
+        public UserController(UserRepository userRepository,
+            IUserValidator userValidator,
+            IUserDelValidator userDelValidator)
         {
             this.userRepository = userRepository;
+            this.userValidator = userValidator;
+            this.userDelValidator = userDelValidator;
         }
-
-        [HttpGet]
+       
+           
+    [HttpGet]
         public IActionResult GetAll()
         {
             var result = userRepository.Get();
@@ -29,8 +38,13 @@ namespace WebApp.Controllers
         public IActionResult Create([FromBody] UserModel newUser)
 
         {
+            var validation = new OperationResult<UserModel>(userValidator.ValidateEntity(newUser));
+            if (!validation.Succeed)
+            {
+                return BadRequest(validation);
+            }
             userRepository.Add(newUser);
-            return Ok(newUser);
+            return NoContent();
         }
 
         [HttpPut]
@@ -44,6 +58,12 @@ namespace WebApp.Controllers
         [HttpDelete]
         public IActionResult Delete([FromBody] int Id)
         {
+            var request = new UserDeleteModel { Id = Id };
+            var validation = new OperationResult<UserDeleteModel>(userDelValidator.ValidateEntity(request));
+            if (!validation.Succeed)
+            {
+                return BadRequest(validation);
+            }
             userRepository.Delete(Id);
             return NoContent();
         }
